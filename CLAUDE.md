@@ -18,6 +18,8 @@ The user (Cadu) drives this from inside Claude Code. He asks for changes ("add a
 - **Don't create remote artifacts without being asked.** No `git push`, no `gh release create`, no `gh repo create` unless the user asks for it explicitly in this turn.
 - **Don't add commentary or attribution to commits** ("Generated with Claude", "Co-Authored-By: Claude"). Cadu's global rule.
 - **CI gates main on `ruff check`, `ruff format --check`, and `mypy` strict.** Run all three locally before any commit you stage. Same versions in CI (pinned via `uv.lock`). Don't hand-patch what the toolchain can fix or flag; let it do its job.
+- **Prefer structured fields and automated rules over hand-arrangement.** When the user asks to reorder, hide, deduplicate, retitle, or force a layout, the right first instinct is "is there a field, validator, or template rule for this?" before "let me edit prose / shuffle the tuple by hand." This codebase grew around that habit: `OpenSourceProject.order` (sort key), `Position.keywords` and `OpenSourceProject.keywords` (replace inline Stack lines), `Company.hidden` (drop without deleting), `Personal.epigraph` (closing colophon), `\needspace` in templates (smart pagination instead of `\newpage`). If you find yourself manually arranging content, that's a signal to add a field or rule instead.
+- **The user edits files alongside you.** System reminders surface his in-flight changes (`Note: ... was modified ... change was intentional, ... don't revert unless asked`). Treat those edits as intentional, do not undo them, and adapt your follow-up work to fit. If his edit conflicts with what you were about to do, ask before overriding.
 
 ## Daily loop
 
