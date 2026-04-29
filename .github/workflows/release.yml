@@ -1,0 +1,56 @@
+name: Release CV PDF
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          enable-cache: true
+
+      - name: Set up Python
+        run: uv python install
+
+      - name: Install Python dependencies
+        run: uv sync --frozen
+
+      - name: Install tectonic
+        run: |
+          cd /tmp
+          curl --proto '=https' --tlsv1.2 -fsSL https://drop-sh.fullyjustified.net | sh
+          sudo mv tectonic /usr/local/bin/
+          which tectonic
+          tectonic -V || tectonic --help | head -3
+
+      - name: Refresh OSS metrics
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: uv run cv refresh-metrics
+
+      - name: Build CV
+        run: uv run cv build
+
+      - name: Rename artifact
+        run: |
+          mkdir -p dist
+          TS=$(date -u +%Y%m%d-%H%M)
+          cp render/cv.pdf "dist/cadu-cv-${TS}-${GITHUB_REF_NAME}.pdf"
+          ls -la dist/
+
+      - name: Upload to GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/cadu-cv-*.pdf
+          fail_on_unmatched_files: true
+          generate_release_notes: true

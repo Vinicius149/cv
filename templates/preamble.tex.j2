@@ -1,0 +1,141 @@
+% Preamble: all typography decisions live here.
+% Edit this file when you want to change fonts, spacing, colors, section styling.
+\documentclass[11pt,letterpaper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+% newtx = modern Times-like with full T1 coverage (Times New Roman feel).
+\usepackage{newtxtext}
+\renewcommand{\familydefault}{\rmdefault}
+\usepackage{amssymb}  % \bigstar
+% Map a few Unicode glyphs that show up in source data to TeX commands,
+% so we never rely on the active font having them in its T1 subset.
+\usepackage{newunicodechar}
+\newunicodechar{·}{\textperiodcentered}
+\newunicodechar{–}{\textendash}
+\newunicodechar{→}{$\rightarrow$}
+\newunicodechar{★}{$\bigstar$}
+
+\usepackage[
+  top=0.4in,
+  bottom=0.4in,
+  left=0.5in,
+  right=0.5in,
+]{geometry}
+
+\usepackage{needspace}  % \needspace{N\baselineskip}: force pagebreak if < N lines remain
+\usepackage{enumitem}
+\setlist[itemize]{
+  leftmargin=1.1em,
+  topsep=0.15em,
+  itemsep=0.05em,
+  parsep=0pt,
+  label=\textbullet,
+}
+
+\usepackage{xcolor}
+\definecolor{rulegrey}{HTML}{B0B0B0}
+\definecolor{accent}{HTML}{222222}
+\definecolor{muted}{HTML}{555555}
+
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks=true,
+  urlcolor=accent,
+  linkcolor=accent,
+  pdfborder={0 0 0},
+}
+
+\usepackage{titlesec}
+% Section heading and its hairline rule should read as one unit (tight),
+% with clear breathing room ABOVE the heading (separating from previous
+% section's content) and a consistent small gap below the rule before
+% the body, regardless of whether the body starts with a paragraph or
+% with a \cvcompanyhead.
+\titleformat{\section}
+  {\large\bfseries\MakeUppercase\letterspacing}
+  {}{0pt}{}[{\vspace*{-2.4ex}\textcolor{rulegrey}{\hrule height 0.5pt}}]
+\titlespacing*{\section}{0pt}{3ex}{1.4ex}
+
+\providecommand{\letterspacing}{}
+
+\usepackage{parskip}
+\setlength{\parskip}{0.4ex}
+\setlength{\parindent}{0pt}
+
+% Allow extra interword stretch on tight lines so long compounds don't overflow.
+\setlength{\emergencystretch}{3em}
+
+\pagestyle{empty}
+
+% --- Layout primitives invoked by cv.tex.j2 ---
+
+% Header: name centered & bold, title underneath in italic muted, then contact strip.
+\newcommand{\cvheader}[3]{%
+  {\centering
+   {\Huge\bfseries #1}\par
+   \vspace{0.4ex}
+   {\large\itshape\textcolor{muted}{#2}}\par
+   \vspace{0.6ex}
+   {\small #3}\par
+  }%
+  \vspace{2ex}%
+}
+
+% A position row inside a company block.
+% #1 = title, #2 = daterange (right-aligned), #3 = locale (smaller grey, same line as title)
+\newcommand{\cvposition}[3]{%
+  \par\smallskip
+  \noindent\textbf{#1}%
+  \ifx&#3&\else~~{\footnotesize\textcolor{muted}{#3}}\fi%
+  \hfill{\small #2}\par
+  \vspace{0.2ex}
+}
+
+% Company head: bold name, optional one-liner in italic muted on the same line.
+% No top \medskip: titlespacing on \section already provides the gap below the rule,
+% and successive companies inside Experience use \cvcompanybreak (below) for separation.
+% \needspace forces a pagebreak if a company would otherwise be orphaned at page bottom
+% with only the heading visible. Tune the N value if companies still get split awkwardly.
+\newcommand{\cvcompanyhead}[2]{%
+  \needspace{7\baselineskip}%
+  \par\noindent{\large\bfseries #1}%
+  \ifx&#2&\else~~{\small\itshape\textcolor{muted}{#2}}\fi\par
+}
+
+% Vertical separator between successive companies inside Experience.
+\newcommand{\cvcompanybreak}{\vspace{3.2ex}}
+
+% Education entry. #1 = institution, #2 = degree+field, #3 = year range
+\newcommand{\cveducation}[3]{%
+  \noindent\textbf{#1}\hfill{\small #3}\par
+  \noindent\textit{#2}\par\smallskip
+}
+
+% Open-source project header.
+% #1 = name, #2 = stars/lang badge ("· ★ 142 · Python"), #3 = url shown
+% Followed by a tagline + description block.
+\newcommand{\cvossheader}[3]{%
+  \par\smallskip
+  \noindent\textbf{#1}~{\small\textcolor{muted}{#2}}\hfill{\small #3}\par
+}
+
+% Inline keyword line, used by Position and OpenSourceProject when their
+% .keywords field is non-empty. Small muted; reads as metadata, not headline.
+\newcommand{\cvkeywords}[1]{%
+  \par\smallskip\noindent{\footnotesize\textcolor{muted}{\textbf{Keywords:}~#1}}\par
+}
+
+% Language row.
+\newcommand{\cvlanguagerow}[2]{%
+  \noindent\textbf{#1:}~\textcolor{muted}{#2}\par
+}
+
+% Closing epigraph: small italic left-aligned muted text. Attribution sits on the
+% same line, separated by an en-dash (`--` in LaTeX source). Generous top vspace
+% so it reads as a closing colophon, not as part of the Languages block.
+% #1 = quote (no surrounding quotes; macro adds typographic ones), #2 = attribution.
+\newcommand{\cvepigraph}[2]{%
+  \par\vspace{5ex}%
+  \noindent{\footnotesize\itshape\textcolor{muted}{``#1'' -- #2}}\par
+}

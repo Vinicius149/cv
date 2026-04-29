@@ -1,0 +1,83 @@
+[project]
+name = "cv"
+version = "0.1.0"
+description = "Cadu's CV-as-code: Pydantic life data, LaTeX, PDF"
+requires-python = ">=3.14"
+dependencies = [
+    "pydantic[email]>=2.7",
+    "jinja2>=3.1",
+    "click>=8.1",
+    "watchfiles>=1.0",
+]
+
+[project.scripts]
+cv = "cv.cli:main"
+
+[dependency-groups]
+dev = [
+    "mypy>=1.13",
+    "ruff>=0.8",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/cv"]
+
+[tool.hatch.build.targets.wheel.sources]
+"src/cv" = "cv"
+
+[tool.ruff]
+line-length = 120
+target-version = "py314"
+extend-exclude = ["render", ".venv"]
+
+[tool.ruff.lint]
+select = [
+    "E",    # pycodestyle errors
+    "W",    # pycodestyle warnings
+    "F",    # pyflakes
+    "I",    # isort
+    "B",    # bugbear
+    "UP",   # pyupgrade
+    "N",    # pep8-naming
+    "RUF",  # ruff-specific
+    "SIM",  # simplify
+    "PTH",  # pathlib-prefer
+    "PERF", # perflint
+    "PIE",  # misc lints
+    "TID",  # tidy imports
+]
+ignore = [
+    "E501",  # line too long: prose lines in CV data are intentionally long
+]
+
+[tool.ruff.lint.per-file-ignores]
+"src/cv/data/**/*.py" = [
+    "E501",  # long prose lines in description blocks
+    "RUF001",  # ambiguous unicode in MD prose (curly apostrophes etc.)
+]
+
+[tool.ruff.format]
+docstring-code-format = true
+
+[tool.mypy]
+python_version = "3.14"
+strict = true
+files = ["src"]
+exclude = ["render/", ".venv/"]
+plugins = ["pydantic.mypy"]
+warn_unused_ignores = true
+warn_redundant_casts = true
+disallow_untyped_decorators = true
+
+[[tool.mypy.overrides]]
+module = ["watchfiles.*"]
+ignore_missing_imports = true
+
+[tool.pyright]
+include = ["src"]
+extraPaths = ["src"]
+pythonVersion = "3.14"

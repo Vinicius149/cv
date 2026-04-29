@@ -1,0 +1,10 @@
+render/
+__pycache__/
+*.py[cod]
+.venv/
+.uv/
+*.aux
+*.log
+*.out
+*.toc
+.DS_Store

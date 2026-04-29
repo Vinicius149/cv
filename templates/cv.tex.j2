@@ -1,0 +1,53 @@
+((* include 'preamble.tex.j2' *))
+\begin{document}
+
+\cvheader{((( cv.personal.name | esc )))}{((( cv.personal.title | esc )))}{((( cv.personal | contact_strip )))}
+
+\section*{Profile}
+((( cv.personal.summary | md )))
+
+\section*{Experience}
+((* for company in cv.companies | sort_companies *))
+((* if not loop.first *))\cvcompanybreak((* endif *))
+\cvcompanyhead{((( company.label | esc )))}{((( company.one_liner | esc if company.one_liner else '' )))}
+((* for pos in company.positions *))
+\cvposition{((( pos.title | esc )))}{((( pos | daterange )))}{((( pos | locale | esc )))}
+((( pos.description | md )))
+((* if pos.keywords *))
+\cvkeywords{((( pos.keywords | join(' · ') | esc )))}
+((* endif *))
+((* endfor *))
+((* endfor *))
+
+((* if cv.open_source *))
+\section*{Open Source}
+((* for proj in cv.open_source | sort(attribute='order') *))
+((* set badge = [] *))
+((* if proj.stars is not none *))((* set _ = badge.append('· $\\bigstar$\\,' ~ proj.stars) *))((* endif *))
+((* if proj.language *))((* set _ = badge.append('· ' ~ proj.language) *))((* endif *))
+\cvossheader{((( proj.name | esc )))}{((( badge | join(' ') )))}{\href{((( proj.derived_url )))}{((( proj.derived_url | strip_proto | esc )))}}
+\noindent\textit{((( proj.tagline | esc )))}\par
+((( proj.description | md )))
+((* if proj.keywords *))
+\cvkeywords{((( proj.keywords | join(' · ') | esc )))}
+((* endif *))
+((* endfor *))
+((* endif *))
+
+\needspace{10\baselineskip}
+\section*{Education}
+((* for edu in cv.education *))
+\cveducation{((( edu.institution | esc )))}{((( edu.degree | esc ))) ((* if edu.field *))-- ((( edu.field | esc )))((* endif *))}{((( edu | year_range )))}
+((* endfor *))
+
+\needspace{6\baselineskip}
+\section*{Languages}
+((* for lang in cv.languages *))
+\cvlanguagerow{((( lang.name | esc )))}{((( lang.proficiency | esc )))}
+((* endfor *))
+
+((* if cv.personal.epigraph *))
+\cvepigraph{((( cv.personal.epigraph | esc )))}{((( cv.personal.epigraph_attribution | esc if cv.personal.epigraph_attribution else '' )))}
+((* endif *))
+
+\end{document}
