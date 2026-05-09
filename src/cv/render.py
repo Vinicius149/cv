@@ -14,17 +14,17 @@ TEMPLATES_DIR = Path(__file__).resolve().parent.parent.parent / "templates"
 
 _MONTHS = (
     "Jan",
-    "Feb",
+    "Fev",
     "Mar",
-    "Apr",
-    "May",
+    "Abr",
+    "Mai",
     "Jun",
     "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
+    "Ago",
+    "Set",
+    "Out",
     "Nov",
-    "Dec",
+    "Dez",
 )
 
 
@@ -33,14 +33,14 @@ def fmt_month_year(d: date) -> str:
 
 
 def fmt_daterange(start: date, end: date | None) -> str:
-    end_str = fmt_month_year(end) if end else "Present"
+    end_str = fmt_month_year(end) if end else "Presente"
     return f"{fmt_month_year(start)} -- {end_str}"
 
 
 def fmt_year_range(start: date | None, end: date | None) -> str:
     """For education: just the years."""
     s = str(start.year) if start else ""
-    e = str(end.year) if end else "Present"
+    e = str(end.year) if end else "Presente"
     if s and e:
         return f"{s} -- {e}"
     return s or e
