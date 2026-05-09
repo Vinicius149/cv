@@ -3,10 +3,10 @@
 
 \cvheader{((( cv.personal.name | esc )))}{((( cv.personal.title | esc )))}{((( cv.personal | contact_strip )))}
 
-\section*{Profile}
+\section*{Perfil}
 ((( cv.personal.summary | md )))
 
-\section*{Experience}
+\section*{Experiência}
 ((* for company in cv.companies | sort_companies *))
 ((* if not loop.first *))\cvcompanybreak((* endif *))
 \cvcompanyhead{((( company.label | esc )))}{((( company.one_liner | esc if company.one_liner else '' )))}

@@ -1,7 +1,7 @@
 from cv.models import Language
 
 LANGUAGES = (
-    Language(name="Portuguese", proficiency="Native"),
-    Language(name="English", proficiency="Proficient - C2"),
-    Language(name="Spanish", proficiency="Basic"),
+    Language(name="Português", proficiency="Nativo"),
+    Language(name="Inglês", proficiency="Avançado (C2)"),
+    Language(name="Espanhol", proficiency="Básico"),
 )
