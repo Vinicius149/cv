@@ -20,13 +20,13 @@
 ((* endfor *))
 
 \needspace{10\baselineskip}
-\section*{Education}
+\section*{Educação}
 ((* for edu in cv.education *))
 \cveducation{((( edu.institution | esc )))}{((( edu.degree | esc ))) ((* if edu.field *))-- ((( edu.field | esc )))((* endif *))}{((( edu | year_range )))}
 ((* endfor *))
 
 \needspace{6\baselineskip}
-\section*{Languages}
+\section*{Idiomas}
 ((* for lang in cv.languages *))
 \cvlanguagerow{((( lang.name | esc )))}{((( lang.proficiency | esc )))}
 ((* endfor *))

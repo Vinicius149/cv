@@ -51,7 +51,7 @@ def fmt_position_locale(pos: Position) -> str:
     if pos.location:
         bits.append(pos.location)
     if pos.remote:
-        bits.append("Remote")
+        bits.append("Remoto")
     return " · ".join(bits)
 
 
