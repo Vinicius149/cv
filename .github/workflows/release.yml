@@ -45,12 +45,12 @@ jobs:
         run: |
           mkdir -p dist
           TS=$(date -u +%Y%m%d-%H%M)
-          cp render/cv.pdf "dist/cadu-cv-${TS}-${GITHUB_REF_NAME}.pdf"
+          cp render/cv.pdf "dist/vinicius-cv-${TS}-${GITHUB_REF_NAME}.pdf"
           ls -la dist/
 
       - name: Upload to GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          files: dist/cadu-cv-*.pdf
+          files: dist/vinicius-cv-*.pdf
           fail_on_unmatched_files: true
           generate_release_notes: true

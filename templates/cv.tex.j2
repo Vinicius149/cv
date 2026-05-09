@@ -19,21 +19,6 @@
 ((* endfor *))
 ((* endfor *))
 
-((* if cv.open_source *))
-\section*{Open Source}
-((* for proj in cv.open_source | sort(attribute='order') *))
-((* set badge = [] *))
-((* if proj.stars is not none *))((* set _ = badge.append('· $\\bigstar$\\,' ~ proj.stars) *))((* endif *))
-((* if proj.language *))((* set _ = badge.append('· ' ~ proj.language) *))((* endif *))
-\cvossheader{((( proj.name | esc )))}{((( badge | join(' ') )))}{\href{((( proj.derived_url )))}{((( proj.derived_url | strip_proto | esc )))}}
-\noindent\textit{((( proj.tagline | esc )))}\par
-((( proj.description | md )))
-((* if proj.keywords *))
-\cvkeywords{((( proj.keywords | join(' · ') | esc )))}
-((* endif *))
-((* endfor *))
-((* endif *))
-
 \needspace{10\baselineskip}
 \section*{Education}
 ((* for edu in cv.education *))

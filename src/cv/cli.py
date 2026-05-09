@@ -16,13 +16,9 @@ from cv.models import CV
 
 
 def _load_cv_with_metrics(force_refresh: bool = False) -> CV:
-    # Imported lazily so `cv refresh-metrics` doesn't pay the data-load cost twice.
     from cv.data import build_cv
-    from cv.enrich import enrich_projects
 
-    cv = build_cv()
-    enriched = enrich_projects(cv.open_source, force_refresh=force_refresh)
-    return cv.model_copy(update={"open_source": enriched})
+    return build_cv()
 
 
 @click.group()
@@ -95,17 +91,8 @@ def tex() -> None:
 
 @main.command(name="refresh-metrics")
 def refresh_metrics() -> None:
-    """Force-refresh OSS star/language/pushed metrics from GitHub."""
-    from cv.data import build_cv
-    from cv.enrich import refresh as _refresh
-
-    cv = build_cv()
-    repos = [p.repo for p in cv.open_source]
-    if not repos:
-        click.echo("no open-source projects to refresh", err=True)
-        return
-    _refresh(repos)
-    click.echo(f"refreshed metrics for {len(repos)} repos")
+    """No-op: open-source metrics are disabled for this fork."""
+    click.echo("open-source metrics are disabled for this project", err=True)
 
 
 @main.command()
